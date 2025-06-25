@@ -32,10 +32,12 @@ services:
       timeout: 10s
       retries: 5
       start_period: 10s
-  app:
-    build: .
+  bot:
+    build:
+      context: .
+      dockerfile: bot/Dockerfile
     container_name: telegram-bot
-    restart: always
+    restart: unless-stopped
     env_file:
       - .env
     depends_on:
@@ -43,9 +45,22 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+    working_dir: /app/bot
+  admin:
+    build:
+      context: .
+      dockerfile: admin/Dockerfile
+    container_name: admin-panel
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - bot
+    ports:
+      - "8000:80"
     volumes:
-      - .:/app
-    working_dir: /app
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /app/admin
 
 volumes:
   mongo-data:

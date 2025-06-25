@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Admin Panel</h1>
+        <nav>
+            <button onclick="showSection('bot-control')">Manage Bot</button>
+            <button onclick="showSection('users')">Manage Users</button>
+            <button onclick="showSection('stats')">Bot Stats</button>
+            <div class="header-auth">
+                <span id="username-display"></span>
+                <button class="logout-button" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section id="bot-control" class="active-section">
+            <h2>Manage Bot</h2>
+            <div>
+                <button onclick="sendCommand('/api/bot/start', 'POST')">Start bot</button>
+                <button onclick="sendCommand('/api/bot/stop', 'POST')">Stop bot</button>
+                <button onclick="sendCommand('/api/bot/restart', 'POST')">Restart bot</button>
+            </div>
+            <h3>Send message to all users</h3>
+            <div>
+                <textarea id="broadcast-message" placeholder="Message for all users..." rows="3"></textarea>
+                <button onclick="broadcastMessage()">Send message</button>
+                <div id="broadcast-result" class="result-box"></div>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3>Send message to one user</h3>
+                <input type="number" id="user-id" placeholder="Telegram ID">
+                <textarea id="user-message" placeholder="Personal message..." rows="3"></textarea>
+                <button onclick="sendUserMessage()">Send message</button>
+                <div id="user-message-result" class="result-box"></div>
+            </div>
+        </section>
+        <section id="users">
+            <h2>Manage Users</h2>
+            <div>
+                <h3>Find users</h3>
+                <div class="search-container">
+                    <input type="number" id="search-user-id" placeholder="Telegram ID">
+                    <button onclick="getUser()">Find one user</button>
+                    <button onclick="getAllUsers()">Find all users</button>
+                </div>
+                <div id="user-search-result" class="result-box"></div>
+            </div>
+            <div class="pagination-controls">
+                <button id="prev-page" onclick="changePage(-1)" disabled>← Go Back</button>
+                <span id="page-info">Page 1</span>
+                <button id="next-page" onclick="changePage(1)" disabled>Go Forward →</button>
+            </div>            
+            <div class="filters-container">
+                <h3>Filters</h3>
+                <div class="filter-group">
+                    <label for="filter-language">Language:</label>
+                    <select id="filter-language">
+                        <option value="">All</option>
+                        <option value="ru">RU</option>
+                        <option value="en">EN</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-status">User bot status:</label>
+                    <select id="filter-status">
+                        <option value="">All</option>
+                        <option value="banned">Only banned</option>
+                        <option value="active">Only active</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="filter-premium">User premium status:</label>
+                    <select id="filter-premium">
+                        <option value="">All</option>
+                        <option value="true">Only premium</option>
+                        <option value="false">Only non-premium</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="page-size">Display per page:</label>
+                    <select id="page-size">
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+                <button onclick="applyFilters()" class="apply-filters">Filter and find all users</button>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3>Ban/Unban</h3>
+                <input type="number" id="ban-user-id" placeholder="Telegram ID">
+                <button onclick="banUser()" class="danger">Ban</button>
+                <button onclick="unbanUser()">Unban</button>
+                <div id="ban-result" class="result-box"></div>
+            </div>
+        </section>
+        <section id="stats">
+            <h2>Bot Stats</h2>
+            <div>
+                <button onclick="loadStats('general')">Total Stats</button>
+                <button onclick="loadStats('activity')">Activity Stats</button>
+                <button onclick="loadStats('languages')">Language Stats</button>
+            </div>
+            <div id="stats-results" class="result-box" style="margin-top: 20px;"></div>
+        </section>
+    </main>
+<script src="/static/js/script.js"></script>
+<script src="/static/js/auth.js"></script>
+</body>
+</html>
