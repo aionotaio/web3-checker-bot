@@ -1,26 +1,29 @@
 import asyncio
 import logging
+from logging.handlers import RotatingFileHandler
 
 from aiogram import Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 from rabbitmq_rpc import RPCClient
 
 from handlers import start_handler, delete_wallets_handler, csv_handler, choose_projects_handler, check_wallets_handler, add_wallets_handler
-from shared.vars import RABBITMQ_DEFAULT_USER, RABBITMQ_DEFAULT_PASS, RABBITMQ_HOST, RABBITMQ_PORT
+from shared.vars import RABBITMQ_DEFAULT_USER, RABBITMQ_DEFAULT_PASS, RABBITMQ_HOST, RABBITMQ_PORT, BOT_LOGS_PATH
 from shared.session import get_db
 from shared.bot_service import BotService
 from shared.bot_instance import BotInstance
 from services.middlewares import CheckBanMiddleware, SyncDataMiddleware
 
 
-logging.basicConfig(level=logging.INFO)
+file_log = RotatingFileHandler(BOT_LOGS_PATH, 'a', 1000000, 5)
+console_log = logging.StreamHandler()
 
-
-collection = get_db()
-service = BotService(collection)
+logging.basicConfig(handlers=(file_log, console_log), level=logging.INFO, format="%(asctime)s.%(msecs)03d | %(levelname)s | %(name)s | %(message)s")
 
 
 async def main():
+    collection = get_db()
+    service = BotService(collection)
+
     rpc_client = await RPCClient.create(
         host=RABBITMQ_HOST,
         port=RABBITMQ_PORT,

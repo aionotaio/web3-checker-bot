@@ -12,11 +12,18 @@ TESTS_DIR: str = os.path.join(root_dir, "tests")
 MOCKS_DIR: str = os.path.join(root_dir, "mocks")
 
 ADMIN_DIR: str = os.path.join(root_dir, "admin")
+BOT_DIR: str = os.path.join(root_dir, 'bot')
 
 TEMPLATES_DIR: str = os.path.join(ADMIN_DIR, "templates")
 STATIC_DIR: str = os.path.join(ADMIN_DIR, "static")
 
 MOCK_DB_PATH: str = os.path.join(MOCKS_DIR, "mock_db.json")
+
+BOT_LOGS_DIR: str = os.path.join(BOT_DIR, "logs")
+BOT_LOGS_PATH: str = os.path.join(BOT_LOGS_DIR, "logs.txt")
+
+ADMIN_LOGS_DIR: str = os.path.join(ADMIN_DIR, "logs")
+ADMIN_LOGS_PATH: str = os.path.join(ADMIN_LOGS_DIR, "logs.txt")
 
 CLAIM_LINKS: dict[str, str] = {
     "sophon": "https://claim.sophon.xyz/",
