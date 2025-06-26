@@ -7,8 +7,9 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from rabbitmq_rpc import RPCClient
 
 from handlers import start_handler, delete_wallets_handler, csv_handler, choose_projects_handler, check_wallets_handler, add_wallets_handler
-from shared.vars import RABBITMQ_DEFAULT_USER, RABBITMQ_DEFAULT_PASS, RABBITMQ_HOST, RABBITMQ_PORT, BOT_LOGS_PATH
+from shared.vars import BOT_LOGS_PATH
 from shared.session import get_db
+from shared.settings import settings
 from shared.bot_service import BotService
 from shared.bot_instance import BotInstance
 from services.middlewares import CheckBanMiddleware, SyncDataMiddleware
@@ -25,10 +26,10 @@ async def main():
     service = BotService(collection)
 
     rpc_client = await RPCClient.create(
-        host=RABBITMQ_HOST,
-        port=RABBITMQ_PORT,
-        user=RABBITMQ_DEFAULT_USER,
-        password=RABBITMQ_DEFAULT_PASS,
+        host=settings.rabbitmq_host,
+        port=settings.rabbitmq_port,
+        user=settings.rabbitmq_default_user,
+        password=settings.rabbitmq_default_pass,
         vhost="/",
         ssl=False,
     )

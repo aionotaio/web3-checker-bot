@@ -1,6 +1,6 @@
 from aiogram import Bot
 
-from shared.vars import BOT_API_TOKEN
+from shared.settings import settings
 
 
 class BotInstance:
@@ -9,5 +9,5 @@ class BotInstance:
     @classmethod
     def get_bot(cls) -> Bot:
         if cls.instance is None:
-            cls.instance = Bot(token=BOT_API_TOKEN)
+            cls.instance = Bot(token=settings.bot_api_token)
         return cls.instance

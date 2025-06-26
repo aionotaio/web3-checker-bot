@@ -5,9 +5,9 @@ from jose import JWTError, jwt
 from fastapi import Depends, Request
 from passlib.context import CryptContext
 
-from shared.vars import JWT_SECRET_KEY, JWT_ALGORITHM, JWT_EXPIRE_SECONDS
 from shared.session import get_admin_db
 from shared.schemas import AdminUser
+from shared.settings import settings
 from shared.exceptions import MissingError, WrongCredentialsError, TokenValidationError
 
 
@@ -26,14 +26,14 @@ def get_password_hash(password: str) -> str:
 
 def create_access_token(data: dict[str, Any]) -> str:
     to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + timedelta(seconds=JWT_EXPIRE_SECONDS)
+    expire = datetime.now(timezone.utc) + timedelta(seconds=settings.jwt_expire_seconds)
     to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
+    return jwt.encode(to_encode, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
 
 
 def decode_access_token(token: str) -> dict[str, Any]:
     try:
-        return jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
+        return jwt.decode(token, settings.jwt_secret_key, algorithms=[settings.jwt_algorithm])
     except JWTError:
         raise TokenValidationError("Failed to auth admin due to failed token decoding")
 

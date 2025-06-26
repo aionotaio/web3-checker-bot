@@ -60,19 +60,4 @@ FULL_RESULTS_CSV: str = "full_results.csv"
 ELIGIBLE_RESULTS_TEMP_CSV: str = "temp_eligible_results.csv"
 ELIGIBLE_RESULTS_CSV: str = "eligible_results.csv"
 
-BOT_API_TOKEN: str = os.getenv("BOT_API_TOKEN", "")
 BOT_CONTAINER_NAME: str = "telegram-bot"
-
-RABBITMQ_HOST: str = os.getenv("RABBITMQ_HOST", "rabbitmq")
-RABBITMQ_PORT: int = int(os.getenv("RABBITMQ_PORT", "5672"))
-RABBITMQ_DEFAULT_USER: str = os.getenv("RABBITMQ_DEFAULT_USER", "")
-RABBITMQ_DEFAULT_PASS: str = os.getenv("RABBITMQ_DEFAULT_PASS", "")
-
-MONGO_HOST: str = os.getenv("MONGO_HOST", "mongodb")
-MONGO_PORT: int = int(os.getenv("MONGO_PORT", "27017"))
-MONGO_INITDB_ROOT_USERNAME: str = os.getenv("MONGO_INITDB_ROOT_USERNAME", "")
-MONGO_INITDB_ROOT_PASSWORD: str = os.getenv("MONGO_INITDB_ROOT_PASSWORD", "")
-
-JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "")
-JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", "HS256")
-JWT_EXPIRE_SECONDS: int = int(os.getenv("JWT_EXPIRE_SECONDS", "3600"))
